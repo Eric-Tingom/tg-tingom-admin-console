@@ -34,6 +34,7 @@ CREATE TABLE ui_table_registry (
   org_id         UUID NOT NULL,
   table_name     TEXT NOT NULL,
   is_ui_managed  BOOLEAN NOT NULL DEFAULT TRUE,
+  is_active      BOOLEAN NOT NULL DEFAULT TRUE,
   action_mode    TEXT NOT NULL CHECK (action_mode IN ('direct', 'approval_required')),
   deleted_at     TIMESTAMPTZ NULL,
   deleted_by     UUID NULL,
@@ -237,7 +238,7 @@ System path: `app.write_source = 'system'` -- allowlisted, nightly DQ job detect
 
 ## 8. Rollback Strategy
 
-New tables: DROP TABLE CASCADE (no data). Soft-delete columns: DROP COLUMN (nullable, no data loss). Triggers/RLS: DROP TRIGGER, DROP POLICY. Feature disable: set `is_ui_managed=FALSE` globally.
+New tables: DROP TABLE CASCADE (no data). Soft-delete columns: DROP COLUMN (nullable, no data loss). Triggers/RLS: DROP TRIGGER, DROP POLICY. Feature disable: set `is_active=FALSE` to temporarily disable registry behavior without changing governance intent. Use `is_ui_managed=FALSE` to de-register governance entirely.
 
 ---
 
